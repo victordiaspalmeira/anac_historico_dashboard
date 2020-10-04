@@ -1,21 +1,10 @@
-
 import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.express as px
 import datetime
-import pickle as p
-
-#carregando dados
-anac_df = p.load(open('data/data.p', "rb")) #carrega database
-
-anac_df.index = pd.to_datetime(anac_df['Partida Prevista'])
-anac_df['Partida Prevista'] = pd.to_datetime(anac_df['Partida Prevista'])
-anac_df['Partida Real'] = pd.to_datetime(anac_df['Partida Real'])
-anac_df['Chegada Prevista'] = pd.to_datetime(anac_df['Chegada Prevista'])
-anac_df['Chegada Real'] = pd.to_datetime(anac_df['Chegada Real'])
+from parsed_data import anac_df
 
 print(anac_df.index)
 #dados pros dropdown
@@ -24,32 +13,27 @@ grp_empresas.sort()
 grp_plots = ['Duração de voo', 'Atrasos', 'Cancelados', 'Situação de Voo']
 
 #flask
-app = dash.Dash(__name__)
-server = app.server
+#app = dash.Dash(__name__)
+#server = app.server
 
 #elementos visuais
-app.layout = html.Div([
+layout_depatures_and_arrivals = html.Div([
+    html.Div([
     html.Div(
         [
             dcc.Dropdown(id='empresa-select',
                         placeholder='Empresa',
                         options=[{'label': i, 'value': i} for i in grp_empresas], 
-                        style={'width': '155px'}
-                        )
-        ]),
-    html.Div(
-        [
-            dcc.Dropdown(id='plot-select',
-                        placeholder='Gráfico',
-                        options=[{'label': i, 'value': i} for i in grp_plots], 
-                        style={'width': '155px'}
-                        )
+                        style={'width': '140px', 'margin-right': '60px'},
+                        value=grp_empresas[0]
+                        ),
         ]),
     html.Div([
-            dcc.Input(id='data-inicio', 
-                    placeholder='Data de início',
-                    type='text',
-                    value='',
+            dcc.DatePickerRange(id='periodo', 
+                    min_date_allowed=datetime.datetime(2015, 1, 1),
+                    max_date_allowed=anac_df['Chegada Prevista'].max(),
+                    start_date=datetime.datetime(2015, 1, 1),
+                    end_date=datetime.datetime(2019,12,31),
                     style={'width': '140px',
                     'display': 'inline-block'})]),
     html.Div([
@@ -88,5 +72,3 @@ def update_graph(empname, plotname, inicio, fim):
     else:
         return None
 
-if __name__ == '__main__':
-    app.run_server(debug=False)
