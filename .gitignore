@@ -1,2 +1,7 @@
 data/data.p
 tabelas tratadas.txt
+__pycache__/app.cpython-37.pyc
+__pycache__/dash.cpython-37.pyc
+__pycache__/layouts.cpython-37.pyc
+data/anac_historico.csv
+data/*
