@@ -17,9 +17,11 @@ anac_df['Partida Real'] = pd.to_datetime(anac_df['Partida Real'])
 anac_df['Chegada Prevista'] = pd.to_datetime(anac_df['Chegada Prevista'])
 anac_df['Chegada Real'] = pd.to_datetime(anac_df['Chegada Real'])
 
+print(anac_df.index)
 #dados pros dropdown
 grp_empresas = anac_df['Sigla da Empresa'].unique()
 grp_empresas.sort()
+grp_plots = ['Duração de voo', 'Atrasos', 'Cancelados', 'Situação de Voo']
 
 #flask
 app = dash.Dash(__name__)
@@ -29,9 +31,18 @@ server = app.server
 app.layout = html.Div([
     html.Div(
         [
-            dcc.Dropdown(id='empresa-select', 
+            dcc.Dropdown(id='empresa-select',
+                        placeholder='Empresa',
                         options=[{'label': i, 'value': i} for i in grp_empresas], 
-                        style={'width': '140px'}
+                        style={'width': '155px'}
+                        )
+        ]),
+    html.Div(
+        [
+            dcc.Dropdown(id='plot-select',
+                        placeholder='Gráfico',
+                        options=[{'label': i, 'value': i} for i in grp_plots], 
+                        style={'width': '155px'}
                         )
         ]),
     html.Div([
@@ -53,19 +64,29 @@ app.layout = html.Div([
 @app.callback(
     Output('flight-duration-plot', 'figure'),
     [Input('empresa-select', 'value')],
+    [Input('plot-select', 'value')],
     [Input('data-inicio', 'value')],
     [Input('data-fim', 'value')],
 
 )
+# Duração de Voos
+# Voos Cancelados
 
-def update_graph(grpname, inicio, fim):
+def update_graph(empname, plotname, inicio, fim):
     start = datetime.datetime.strptime(inicio, '%d/%m/%Y').date()
     end = datetime.datetime.strptime(fim, '%d/%m/%Y').date()
     print(str(start), str(end))
-    
-    plot_df = anac_df[anac_df['Sigla da Empresa'] == grpname]
+    print(plotname)
+    plot_df = anac_df[anac_df['Sigla da Empresa'] == empname]
     plot_df = plot_df.loc[str(start):str(end)]
-    return px.scatter(plot_df, x=plot_df.index, y=plot_df['Chegada Prevista'], labels={"index": "Partida Prevista"})
+    
+    if plotname == 'Duração de voo':
+        duracao_series = (plot_df['Chegada Real'] - plot_df['Partida Real']).div(pd.Timedelta('1H'))
+        return px.scatter(plot_df, x=plot_df.index, y=duracao_series, labels={"index": "Partida Prevista", "y": "Duração em horas"})
+    if plotname == 'Atrasos':
+        return 
+    else:
+        return None
 
 if __name__ == '__main__':
     app.run_server(debug=False)
