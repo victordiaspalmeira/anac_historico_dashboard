@@ -21,7 +21,7 @@ if __name__ == "__main__":
     anac_df = pd.DataFrame(columns=cols)
     for df in df_list:
         df.reset_index()
-        print(df.columns, cols)
+        #print(df.columns, cols)
         df.columns = cols
 
         for col in df.columns:
@@ -37,6 +37,6 @@ if __name__ == "__main__":
     for key in date_cols:
         anac_df[key] = pd.to_datetime(anac_df[key], format=format, errors='coerce')
 
-    print(anac_df)
+    #print(anac_df)
     anac_df.to_csv('anac_historico.csv', encoding = "ISO-8859-1")
     p.dump(anac_df, open("data.p", "wb"))
