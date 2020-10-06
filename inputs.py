@@ -13,7 +13,7 @@ layout_inputs = html.Div([
                          options=[{'label': i, 'value': i}
                                   for i in grp_empresas],
                          placeholder='Empresa',
-                         style={'width': '140px', 'margin-right': '70px'},
+                         style={'width': '300px', 'margin-right': '70px'},
                          multi=True
                          ),
         ]),
