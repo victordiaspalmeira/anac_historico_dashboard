@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 from layout_departures_and_arrivals import layout_depatures_and_arrivals
 from layout_flight_status import layout_flight_status
 from layout_flight_duration import layout_flight_duration
+from inputs import layout_inputs
 import callbacks
 
 app.index_string = ''' 
@@ -40,9 +41,12 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+layout_main = html.Div([layout_inputs, layout_flight_duration,
+                        layout_flight_status, layout_depatures_and_arrivals])
+
+
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
-
 def display_page(pathname):
     if pathname == '/departures':
         return layout_depatures_and_arrivals
@@ -50,9 +54,11 @@ def display_page(pathname):
         return layout_flight_status
     elif pathname == '/duration':
         return layout_flight_duration
-        
+    elif pathname == '/main':
+        return layout_main
     else:
         return None
+
 
 if __name__ == '__main__':
     app.run_server(debug=False)

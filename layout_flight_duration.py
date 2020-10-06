@@ -17,39 +17,5 @@ grp_empresas.sort()
 #elementos visuais
 layout_flight_duration = html.Div([
     html.Div([
-    html.Div(
-        [
-            dcc.Dropdown(id='empresa-select', 
-                        options=[{'label': i, 'value': i} for i in grp_empresas],
-                        placeholder='Empresa',
-                        style={'width': '140px', 'margin-right': '70px'},
-                        multi=True
-                        ),
-        ]),
-    html.Div(
-        [
-            dcc.Dropdown(id='origem-select', 
-                        options=[{'label': i, 'value': i} for i in aero_origem],
-                        placeholder='Origem',
-                        style={'width': '140px', 'margin-right': '70px'},
-                        ),
-        ]),
-    html.Div(
-        [
-            dcc.Dropdown(id='destino-select', 
-                        options=[{'label': i, 'value': i} for i in aero_destino],
-                        placeholder='Destino',
-                        style={'width': '140px', 'margin-right': '70px'},
-                        ),
-        ]),
-    html.Div([
-            dcc.DatePickerRange(id='periodo', 
-                    min_date_allowed=datetime.datetime(2015, 1, 1),
-                    max_date_allowed=anac_df['Chegada Prevista'].max(),
-                    start_date=datetime.datetime(2015, 1, 1),
-                    end_date=datetime.datetime(2015,1,2),
-                    style={'width': '400px',
-                    'display': 'inline-block'})])],
-                    style={'display': 'flex', 'flex-direction': 'row', 'flex': 1, 'justify-content': 'center', 'align-items': 'center'}),
     dcc.Graph('flight-duration-plot',  config={'displayModeBar': True})],
-    )
+    )])

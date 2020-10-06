@@ -6,6 +6,7 @@ import plotly.express as px
 import re
 import pandas as pd
 
+
 @app.callback(
     Output('flight-depart-arrival-plot', 'figure'),
     [Input('empresa-select', 'value')],
@@ -28,8 +29,9 @@ def update_graph_depart_arrival(empname, origin, destination, start_date, end_da
         plot_df = plot_df[plot_df['Aeroporto Origem'] == origin]
     if(destination != None):
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
-    
+
     return px.scatter(plot_df, y=plot_df['Chegada Real'], labels={"index": "Partida Real"}, color='Sigla da Empresa')
+
 
 @app.callback(
     Output('flight-duration-plot', 'figure'),
@@ -53,11 +55,13 @@ def update_graph_flight_duration(empname, origin, destination, start_date, end_d
         plot_df = plot_df[plot_df['Aeroporto Origem'] == origin]
     if(destination != None):
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
-        
-    duracao_series = (plot_df['Chegada Real'] - plot_df['Partida Real']).div(pd.Timedelta('1H'))
+
+    duracao_series = (plot_df['Chegada Real'] -
+                      plot_df['Partida Real']).div(pd.Timedelta('1H'))
     return px.scatter(plot_df, y=duracao_series, labels={"index": "Partida Real", "y": "Duração em horas"}, color='Sigla da Empresa')
 
-@app.callback(    
+
+@app.callback(
     Output('flight-status-plot', 'figure'),
     [Input('empresa-select', 'value')],
     [Input('origem-select', 'value')],
@@ -78,4 +82,4 @@ def update_graph_flight_status(empname, origin, destination, start_date, end_dat
     if(destination != None):
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
 
-    return px.histogram(plot_df, x='Situação do Voo', color='Sigla da Empresa', barmode='group', labels={'y':'Contagem'})    
+    return px.histogram(plot_df, x='Situação do Voo', color='Sigla da Empresa', barmode='group', labels={'y': 'Contagem'})
