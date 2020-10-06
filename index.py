@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 from layout_departures_and_arrivals import layout_depatures_and_arrivals
 from layout_flight_status import layout_flight_status
 from layout_flight_duration import layout_flight_duration
+from layout_flight_flight_airports_pair import layout_flight_airports_pair
 from inputs import layout_inputs
 import callbacks
 
@@ -42,7 +43,7 @@ app.layout = html.Div([
 ])
 
 layout_main = html.Div([layout_inputs, layout_flight_duration,
-                        layout_flight_status, layout_depatures_and_arrivals])
+                        layout_flight_status, layout_depatures_and_arrivals, layout_flight_airports_pair])
 
 
 @app.callback(Output('page-content', 'children'),

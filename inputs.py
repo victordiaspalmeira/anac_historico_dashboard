@@ -24,6 +24,7 @@ layout_inputs = html.Div([
                                   for i in aero_origem],
                          placeholder='Origem',
                          style={'width': '140px', 'margin-right': '70px'},
+                        multi=True
                          ),
         ]),
     html.Div(
@@ -33,6 +34,7 @@ layout_inputs = html.Div([
                                   for i in aero_destino],
                          placeholder='Destino',
                          style={'width': '140px', 'margin-right': '70px'},
+                         multi=True
                          ),
         ]),
     html.Div([
