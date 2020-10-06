@@ -3,6 +3,8 @@ import glob, os
 import pickle as p
 import datetime
 
+cols = ['Sigla da Empresa', 'Número do Voo', 'Código Autorização (DI)', 'Tipo de linha', 'Aeroporto Origem', 'Aeroporto Destino', 
+        'Partida Prevista', 'Partida Real', 'Chegada Prevista', 'Chegada Real', 'Situação do Voo', 'Justificativa']
 def open_data(path):
     os.chdir(path)
     df_list = list()
@@ -16,13 +18,16 @@ def open_data(path):
 
 if __name__ == "__main__":
     df_list = open_data('./data')
-    cols = ['Sigla da Empresa', 'Número do Voo', 'Código Autorização (DI)', 'Tipo de linha', 'Aeroporto Origem', 'Aeroporto Destino', 
-            'Partida Prevista', 'Partida Real', 'Chegada Prevista', 'Chegada Real', 'Situação do Voo', 'Justificativa']
+
     anac_df = pd.DataFrame(columns=cols)
     for df in df_list:
         df.reset_index()
         #print(df.columns, cols)
-        df.columns = cols
+        try:
+            df.columns = cols
+        except:
+            print(cols)
+            print(df.columns)
 
         for col in df.columns:
             try:
@@ -36,6 +41,7 @@ if __name__ == "__main__":
     date_cols = ['Partida Prevista', 'Partida Real', 'Chegada Prevista', 'Chegada Real']
     for key in date_cols:
         anac_df[key] = pd.to_datetime(anac_df[key], format=format, errors='coerce')
+    anac_df['Situação do Voo'] = df['Situação do Voo'].replace({'REALIZADO':'Realizado', 'CANCELADO':'Cancelado', 'NÃO REALIZADO': "Cancelado"})
 
     #print(anac_df)
     anac_df.to_csv('anac_historico.csv', encoding = "ISO-8859-1")

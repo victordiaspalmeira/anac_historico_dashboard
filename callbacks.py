@@ -29,7 +29,7 @@ def update_graph_depart_arrival(empname, origin, destination, start_date, end_da
     if(destination != None):
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
     
-    return px.scatter(plot_df, y=plot_df['Chegada Prevista'], labels={"index": "Partida Prevista"}, color='Sigla da Empresa')
+    return px.scatter(plot_df, y=plot_df['Chegada Real'], labels={"index": "Partida Real"}, color='Sigla da Empresa')
 
 @app.callback(
     Output('flight-duration-plot', 'figure'),
@@ -55,7 +55,7 @@ def update_graph_flight_duration(empname, origin, destination, start_date, end_d
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
         
     duracao_series = (plot_df['Chegada Real'] - plot_df['Partida Real']).div(pd.Timedelta('1H'))
-    return px.scatter(plot_df, y=duracao_series, labels={"index": "Partida Prevista", "y": "Duração em horas"}, color='Sigla da Empresa')
+    return px.scatter(plot_df, y=duracao_series, labels={"index": "Partida Real", "y": "Duração em horas"}, color='Sigla da Empresa')
 
 @app.callback(    
     Output('flight-status-plot', 'figure'),
@@ -68,10 +68,9 @@ def update_graph_flight_duration(empname, origin, destination, start_date, end_d
 def update_graph_flight_status(empname, origin, destination, start_date, end_date):
     start = dt.strptime(re.split('T| ', start_date)[0], '%Y-%m-%d')
     end = dt.strptime(re.split('T| ', end_date)[0], '%Y-%m-%d')
-    
-    plot_df = anac_df[anac_df['Sigla da Empresa'] == empname]
+    plot_df = anac_df
     plot_df = plot_df.loc[str(start):str(end)]
-
+    print(plot_df.columns)
     if(empname != None):
         plot_df = plot_df[plot_df['Sigla da Empresa'].isin(empname)]
     if(origin != None):
@@ -79,4 +78,4 @@ def update_graph_flight_status(empname, origin, destination, start_date, end_dat
     if(destination != None):
         plot_df = plot_df[plot_df['Aeroporto Destino'] == destination]
 
-    return px.histogram(x=plot_df['Situação do Voo'])    
+    return px.histogram(plot_df, x='Situação do Voo', color='Sigla da Empresa', barmode='group', labels={'y':'Contagem'})    
