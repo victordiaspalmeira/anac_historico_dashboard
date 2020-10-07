@@ -15,7 +15,7 @@ import dash
 
 layout_flight_status_relative = html.Div([
     dcc.Graph('flight-status-plot-relative',  config={'displayModeBar': True})],
-)
+    style={"flex": "1"})
 
 
 @app.callback(
@@ -47,4 +47,4 @@ def update_graph_flight_status_relative(empname, origin, destination, start_date
         print("Não há dados.")
         return px.scatter(title="Situação do Voo")
 
-    return px.bar(inner_join, y='Relativo', title="Porcentagem de Voos Cancelados", hover_data=["Relativo", "Total"])
+    return px.bar(inner_join, y='Relativo', title="Porcentagem de Voos Cancelados por Empresa", hover_data=["Relativo", "Total"])

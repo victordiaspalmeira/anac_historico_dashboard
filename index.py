@@ -12,10 +12,11 @@ from layout_flight_flight_airports_pair import *
 from layout_flight_depart_delay import *
 from layout_flight_arrival_delay import *
 from layout_flight_status_relative import *
-from layout_utils import multiple_graph_div
-#import callbacks
+from layout_flights_by_airport import *
+from layout_flights_per_day import *
+from layout_utils import multiple_chart_div
 
-app.index_string = ''' 
+app.index_string = '''
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,19 +26,16 @@ app.index_string = '''
         {%css%}
     </head>
     <body>
+        <div style="display:flex;text-align:center;justify-content:center;margin-bottom:90;">
+        <p style="font-size:20px">Agência Nacional de Aviação Civil - Análise de Voos
+        </p>
+        </div>
         {%app_entry%}
-        <ul>
-        <li><a href="/departures">Horários de Partida vs Chegada</a></li>
-        <li><a href="/status">Status de Voo</a></li>
-        <li><a href="/duration">Duração de Voos</a></li>
-        <li><a href="/">Índice</a></li>
-        </ul>
         <footer>
             {%config%}
             {%scripts%}
             {%renderer%}
         </footer>
-        <div>Agência Nacional de Aviação Civil - Análise de Voos</div>
     </body>
 </html>
 '''
@@ -48,19 +46,22 @@ app.layout = html.Div([
 ])
 
 layout_main = html.Div([layout_inputs,
-                        layout_depatures_and_arrivals,
+                        multiple_chart_div([
+                            layout_flights_by_origin_airport, layout_flights_by_destination_airport]),
+                        layout_flights_per_day,
                         layout_flight_duration,
                         layout_flight_depart_delay,
                         layout_flight_arrival_delay,
-                        layout_flight_status,
-                        layout_flight_status_relative,
+                        multiple_chart_div([
+                            layout_flight_status, layout_flight_status_relative]),
                         layout_flight_type,
+                        layout_depatures_and_arrivals,
                         layout_flight_airports_pair,
                         ])
 
 
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
+@ app.callback(Output('page-content', 'children'),
+               [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/departures':
         return layout_depatures_and_arrivals
@@ -71,7 +72,7 @@ def display_page(pathname):
     elif pathname == '/main':
         return layout_main
     else:
-        return None
+        return layout_main
 
 
 if __name__ == '__main__':
