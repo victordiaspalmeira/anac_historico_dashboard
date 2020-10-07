@@ -13,7 +13,7 @@ from layout_flight_depart_delay import *
 from layout_flight_arrival_delay import *
 from layout_flight_status_relative import *
 from layout_utils import multiple_graph_div
-import callbacks
+#import callbacks
 
 app.index_string = ''' 
 <!DOCTYPE html>
@@ -48,13 +48,13 @@ app.layout = html.Div([
 ])
 
 layout_main = html.Div([layout_inputs,
-                        layout_flight_status_relative,
+                        layout_depatures_and_arrivals,
                         layout_flight_duration,
                         layout_flight_depart_delay,
                         layout_flight_arrival_delay,
                         layout_flight_status,
+                        layout_flight_status_relative,
                         layout_flight_type,
-                        layout_depatures_and_arrivals,
                         layout_flight_airports_pair,
                         ])
 
