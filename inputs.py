@@ -6,9 +6,6 @@ from dash.dependencies import Input, Output
 import datetime
 from parsed_data import anac_df, grp_empresas, aero_origem, aero_destino
 
-
-
-
 layout_inputs = html.Div([
     html.Div(
         [
