@@ -6,6 +6,9 @@ from dash.dependencies import Input, Output
 import datetime
 from parsed_data import anac_df, grp_empresas, aero_origem, aero_destino
 
+
+
+
 layout_inputs = html.Div([
     html.Div(
         [
@@ -24,6 +27,7 @@ layout_inputs = html.Div([
                                   for i in aero_origem],
                          placeholder='Origem',
                          style={'width': '140px', 'margin-right': '70px'},
+                         multi=True
                          ),
         ]),
     html.Div(
@@ -33,6 +37,7 @@ layout_inputs = html.Div([
                                   for i in aero_destino],
                          placeholder='Destino',
                          style={'width': '140px', 'margin-right': '70px'},
+                         multi=True
                          ),
         ]),
     html.Div([
@@ -40,6 +45,7 @@ layout_inputs = html.Div([
                             min_date_allowed=datetime.datetime(2015, 1, 1),
                             max_date_allowed=anac_df['Chegada Prevista'].max(
                             ),
+                            display_format='DD/MM/YYYY',
                             start_date=datetime.datetime(2015, 1, 1),
                             end_date=datetime.datetime(2015, 1, 2),
                             style={'width': '400px',

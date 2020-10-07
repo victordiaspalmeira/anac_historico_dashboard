@@ -41,8 +41,10 @@ if __name__ == "__main__":
     date_cols = ['Partida Prevista', 'Partida Real', 'Chegada Prevista', 'Chegada Real']
     for key in date_cols:
         anac_df[key] = pd.to_datetime(anac_df[key], format=format, errors='coerce')
-    anac_df['Situação do Voo'] = df['Situação do Voo'].replace({'REALIZADO':'Realizado', 'CANCELADO':'Cancelado', 'NÃO REALIZADO': "Cancelado"})
-
+    anac_df['Situação do Voo'] = anac_df['Situação do Voo'].replace({'REALIZADO':'Realizado', 'CANCELADO':'Cancelado', 'NÃO REALIZADO': "Cancelado"})
+    #print("-------")
+    #print(anac_df[anac_df['Situação do Voo'].isin(['Cancelado'])])
     #print(anac_df)
+    anac_df['Partida Real'] = anac_df['Partida Real'].fillna(anac_df['Partida Prevista'])
     anac_df.to_csv('anac_historico.csv', encoding = "ISO-8859-1")
     p.dump(anac_df, open("data.p", "wb"))
