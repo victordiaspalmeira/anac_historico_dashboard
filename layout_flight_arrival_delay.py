@@ -39,7 +39,7 @@ def update_graph_flight_arrival_delay(empname, origin, destination, start_date, 
     #    plot_df['Partida Prevista']).div(pd.Timedelta('1minute'))
     atraso_series = ((pd.to_datetime(plot_df['Chegada Real']) - pd.to_datetime(
         plot_df['Chegada Prevista'])).dt.total_seconds() / 60)
-    print(atraso_series)
+    # print(atraso_series)
     print(empname, origin, destination, start, end)
     if plot_df.empty:
         print("Não há dados.")

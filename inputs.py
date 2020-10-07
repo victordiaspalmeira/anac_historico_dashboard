@@ -44,12 +44,20 @@ layout_inputs = html.Div([
                             ),
                             display_format='DD/MM/YYYY',
                             start_date=datetime.datetime(2015, 1, 1),
-                            end_date=datetime.datetime(2015, 1, 2),
+                            end_date=datetime.datetime(2015, 1, 5),
                             style={'width': '400px',
                                    'display': 'inline-block'})])],
     style={
         'display': 'flex',
         'flex-direction': 'row',
-        'flex': 1,
-        'justify-content': 'center',
-        'align-items': 'center'})
+        'flex': "1",
+        'justify-content': 'space-evenly',
+        "padding-left": "10",
+        "padding-right": "10",
+        "position": "sticky",
+        "top": "0",
+        "z-index": "100",
+        'align-items': 'center',
+        "background-color": "white",
+        "padding-bottom": "30"
+})
